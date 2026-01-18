@@ -1,14 +1,28 @@
 class Solution {
-    public ArrayList<Integer> findGreater(int[] a) {
-        HashMap<Integer, Integer> f = new HashMap<>();
-        for (int x : a) f.put(x, f.getOrDefault(x, 0) + 1);
-        ArrayList<Integer> r = new ArrayList<>(Collections.nCopies(a.length, -1));
-        Deque<Integer> s = new ArrayDeque<>();
-        for (int i = 0; i < a.length; i++) {
-            while (!s.isEmpty() && f.get(a[i]) > f.get(a[s.peekLast()]))
-                r.set(s.pollLast(), a[i]);
-            s.add(i);
+    public ArrayList<Integer> nextFreqGreater(int[] arr) {
+        int n = arr.length;
+        Map<Integer, Integer> freqMap = new HashMap<>();
+        for (int num : arr) {
+            freqMap.put(num, freqMap.getOrDefault(num, 0) + 1);
         }
-        return r;
+
+        ArrayList<Integer> result = new ArrayList<>(Collections.nCopies(n, -1));
+        Stack<Integer> stack = new Stack<>();
+
+        for (int i = n - 1; i >= 0; i--) {
+            int currentFreq = freqMap.get(arr[i]);
+            
+            while (!stack.isEmpty() && freqMap.get(stack.peek()) <= currentFreq) {
+                stack.pop();
+            }
+            
+            if (!stack.isEmpty()) {
+                result.set(i, stack.peek());
+            }
+            
+            stack.push(arr[i]);
+        }
+        
+        return result;
     }
 }
