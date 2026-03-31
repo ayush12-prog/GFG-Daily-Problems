@@ -3,21 +3,18 @@ class Solution {
         if (arr == null || arr.length == 0) {
             return 0;
         }
-
+        
         int cash = 0;
         int hold = -arr[0];
-
+        
         for (int i = 1; i < arr.length; i++) {
+            int nextCash = Math.max(cash, hold + arr[i] - k);
+            int nextHold = Math.max(hold, cash - arr[i]);
             
-            int newCash = Math.max(cash, hold + arr[i] - k);
-            
-            
-            int newHold = Math.max(hold, cash - arr[i]);
-            
-            cash = newCash;
-            hold = newHold;
+            cash = nextCash;
+            hold = nextHold;
         }
-
+        
         return cash;
     }
 }
